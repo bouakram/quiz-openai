@@ -1,54 +1,58 @@
-import { DefaultSession, NextAuthOptions } from "next-auth"
+import { DefaultSession, NextAuthOptions, getServerSession } from "next-auth"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import GoogleProvider from "next-auth/providers/google"
 import prisma from "./db"
 
-declare module 'next-auth' {
+declare module "next-auth" {
     interface Session extends DefaultSession {
         user: {
-            id: string
-        } & DefaultSession['user']
+            id: string,
+        } & DefaultSession["user"];
     }
 }
 
-declare module 'next-auth/jwt' {
+declare module "next-auth/jwt" {
     interface JWT {
-        id: string
+        id: string;
     }
 }
 
 export const authOptions: NextAuthOptions = {
+    adapter: PrismaAdapter(prisma),
     session: {
-        strategy: "jwt"
+        strategy: "jwt",
     },
+    secret: process.env.NEXTAUTH_SECRET,
     callbacks: {
         jwt: async ({ token }) => {
             const db_user = await prisma.user.findFirst({
                 where: {
-                    email: token?.email
-                }
-            })
+                    email: token?.email as string,
+                },
+            });
             if (db_user) {
-                token.id = db_user.id
+                token.id = db_user.id;
             }
-            return token
+            return token;
         },
         session: ({ session, token }) => {
             if (token) {
-                session.user.id = token.id
-                session.user.email = token.email
-                session.user.name = token.name
-                session.user.image = token.picture
+                session.user.id = token.id;
+                session.user.name = token.name;
+                session.user.email = token.email;
+                session.user.image = token.picture;
             }
-            return session
-        }
+            return session;
+        },
     },
-    secret: process.env.NEXTAUTH_SECRET,
-    adapter: PrismaAdapter(prisma),
     providers: [
         GoogleProvider({
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-            clientId: process.env.GOOGLE_CLIENT_ID as string
+            clientId: process.env.GOOGLE_CLIENT_ID as string,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET as string
         })
     ]
+}
+
+export const getAuthSession = () => {
+    return getServerSession(authOptions)
 }
