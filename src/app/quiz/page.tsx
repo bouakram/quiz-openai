@@ -6,7 +6,7 @@ import React from 'react'
 type Props = {}
 
 export const metadata = {
-    title: "QuizGen Create Quiz"
+    title: "QuizGenAI Create Quiz"
 }
 
 const QuizPage = async (props: Props) => {

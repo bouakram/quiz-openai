@@ -1,13 +1,13 @@
 import HistoryTrack from "@/components/History"
 import HistoryGenCard from "@/components/home/HistoryGenCard"
-import QuizGenCard from "@/components/home/QuizGenCard"
+import QuizGenAICard from "@/components/home/QuizGenAICard"
 import { getAuthSession } from "@/lib/nextAuth"
 import { redirect } from "next/navigation"
 
 type Props = {}
 
 export const metadata = {
-    title: "QuizGen Home"
+    title: "QuizGenAI Home"
 }
 
 const HomePage = async (props: Props) => {
@@ -21,7 +21,7 @@ const HomePage = async (props: Props) => {
                 <h2 className="text-3xl font-bold tracking-tight mb-8">Welcome Back <span className="bg-clip-text text-transparent bg-gradient-to-r from-gray-600 to-gray-500 dark:from-gray-500 dark:to-gray-400">{session?.user.name}</span> 👋</h2>
             </div>
             <div className="grid gap-4 mt-4 md:grid-cols-7">
-                <QuizGenCard />
+                <QuizGenAICard />
                 {/* <HistoryGenCard /> */}
             </div>
             <div className="grid gap-4 mt-4">

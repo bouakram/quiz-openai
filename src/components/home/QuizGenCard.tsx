@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation'
 
 type Props = {}
 
-const QuizGenCard = (props: Props) => {
+const QuizGenAICard = (props: Props) => {
     const router = useRouter()
     return (
         <Card
@@ -25,4 +25,4 @@ const QuizGenCard = (props: Props) => {
     )
 }
 
-export default QuizGenCard
+export default QuizGenAICard

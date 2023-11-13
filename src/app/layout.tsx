@@ -10,8 +10,8 @@ import Footer from '@/components/Footer'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'QuizGen: AI-Powered Quiz Generator',
-  description: 'Create engaging quizzes effortlessly with QuizGen, an innovative app powered by OpenAI. Generate dynamic and interactive quizzes for your audience with ease.',
+  title: 'QuizGenAI: AI-Powered Quiz Generator',
+  description: 'Create engaging quizzes effortlessly with QuizGenAI, an innovative app powered by OpenAI. Generate dynamic and interactive quizzes for your audience with ease.',
 }
 
 export default function RootLayout({
