@@ -11,7 +11,7 @@ const HistoryGenCard = (props: Props) => {
     const router = useRouter()
     return (
         <Card
-            className='border border-r-4 border-b-4 border-gray-900 dark:border-gray-100 hover:-translate-y-1 transition cursor-pointer'
+            className='border border-r-4 border-b-4 border-gray-700 dark:border-gray-300 hover:-translate-y-1 transition cursor-pointer'
             onClick={() => { router.push('/history') }}
         >
             <CardHeader className='flex flex-row items-center justify-between pb-2'>

@@ -5,3 +5,8 @@ export const CreateQuizSchema = z.object({
     type: z.enum(["mcq"]),
     amount: z.number().min(1).max(10)
 })
+
+export const CheckAnswerSchema = z.object({
+    userInput: z.string(),
+    questionId: z.string(),
+});

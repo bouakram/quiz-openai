@@ -10,9 +10,9 @@ type Props = {}
 const QuizGenCard = (props: Props) => {
     const router = useRouter()
     return (
-        <Card 
-        className='border border-r-4 border-b-4 border-gray-900 dark:border-gray-100 hover:-translate-y-1 transition cursor-pointer'
-        onClick={()=>{router.push('/quiz')}}
+        <Card
+            className='col-span-7 border border-r-4 border-b-4 border-gray-700 dark:border-gray-300 hover:-translate-y-1 transition cursor-pointer'
+            onClick={() => { router.push('/quiz') }}
         >
             <CardHeader className='flex flex-row items-center justify-between pb-2'>
                 <CardTitle className='text-xl font-bold text-gray-950 dark:text-gray-50'>Start Quiz</CardTitle>

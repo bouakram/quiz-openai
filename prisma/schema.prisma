@@ -1,10 +1,14 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mongodb"
-  url      = env("DATABASE_URL")
+  provider     = "mongodb"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 model Account {
@@ -20,10 +24,10 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
 model Session {
@@ -32,54 +36,57 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model User {
   id            String    @id @default(cuid()) @map("_id")
   name          String?
-  email         String    @unique
+  email         String?   @unique
   emailVerified DateTime?
   image         String?
+  quizs         Quiz[]
   accounts      Account[]
   sessions      Session[]
-  quiz          Quiz[]
-}
-
-model VerificationToken {
-  identifier String   @id @map("_id")
-  token      String   @unique
-  expires    DateTime
-
-  @@unique([identifier, token])
 }
 
 enum QuizType {
   mcq
+  open_ended
 }
 
 model Quiz {
-  id        String      @id @default(cuid()) @map("_id")
-  userId    String
-  topic     String
-  startedAt DateTime
-  endedAt   DateTime?
-  type      QuizType
-  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  questions Questions[]
+  id          String     @id @default(cuid()) @map("_id")
+  userId      String
+  questions   Question[]
+  timeStarted DateTime
+  topic       String
+  timeEnded   DateTime?
+  quizType    QuizType
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([userId], name: "userId")
+  @@index([userId])
 }
 
-model Questions {
-  id           String   @id @default(cuid()) @map("_id")
-  question     String
-  answer       String
-  quizId       String
-  options      Json
-  isCorrect    Boolean
-  questionType QuizType
-  userAnswer   String?
-  quiz         Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+model topic_count {
+  id    String @id @default(cuid()) @map("_id")
+  topic String @unique
+  count Int
+}
 
-  @@index([quizId], name: "quizId")
+model Question {
+  id                String   @id @default(cuid()) @map("_id")
+  question          String
+  answer            String
+  quizId            String
+  options           Json? // for mcq questions
+  percentageCorrect Float? // for open_ended questions
+  isCorrect         Boolean? // for mcq questions
+  questionType      QuizType
+  userAnswer        String?
+
+  quiz Quiz @relation(fields: [quizId], references: [id])
+
+  @@index([quizId])
 }
